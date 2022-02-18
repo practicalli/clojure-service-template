@@ -1,6 +1,9 @@
-# clojure-app-template
+# Practicalli Clojure project template
 
-FIXME: my new application.
+To aid in the development of project templates for deps-new, this repository contains code and configuration that respresents what a generated project should product.
+
+There are still work in progress and feedback is welcome.
+
 
 ## Installation
 
