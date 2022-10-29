@@ -1,0 +1,115 @@
+# ------------------------------------------
+# Build and run Practicalli Gameboard API Service
+#
+# Author: Practicalli
+#
+# Builder image:
+# Official Clojure Docker image with Java 17 (eclipse-temurin) and Clojure CLI
+# https://hub.docker.com/_/clojure/
+#
+# Run-time image:
+# Official Java Docker image with Java 17 (eclipse-temurin)
+# https://hub.docker.com/_/eclipse-temurin
+# ------------------------------------------
+
+
+# ------------------------
+# Setup Builder container
+
+FROM clojure:temurin-17-alpine AS builder
+
+# Set Clojure CLI version (defaults to latest release)
+# ENV CLOJURE_VERSION=1.11.1.1155
+
+# Create directory for project code (working directory)
+RUN mkdir -p /build
+
+# Set Docker working directory
+WORKDIR /build
+
+# Cache and install Clojure dependencies
+# Add before copying code to cache the layer even if code changes
+COPY deps.edn Makefile /build/
+RUN make deps
+
+# Copy project to working directory
+COPY ./ /build
+
+
+# ------------------------
+# Test and Package application via Makefile
+# `make all` calls `deps`, `test-ci`, `dist` and `clean` tasks
+# using shared library cache mounted by pipeline process
+
+
+# `dist` task packages Clojure service as an uberjar
+# creating: /build/practicalli-gameboard-api-service.jar
+# using the command `clojure -X:package/uberjar`
+
+# Run task from Makefile
+RUN make all
+
+# End of Docker builder image
+# ------------------------------------------
+
+
+# ------------------------------------------
+# Docker container to run Practicalli Gameboard API Service
+# run locally using: docker-compose up --build
+
+# ------------------------
+# Setup Run-time Container
+
+# Official OpenJDK Image
+FROM eclipse-temurin:17-alpine
+
+LABEL org.opencontainers.image.authors="nospam+dockerfile@practicall.li"
+LABEL io.github.practicalli.service="Gameboard API Service"
+LABEL io.github.practicalli.team="Practicalli Engineering Team"
+LABEL version="1.0"
+LABEL description="Gameboard API service"
+
+# Add Curl and jq binaries for manual running of system integration scripts
+RUN apk add --no-cache \
+    curl~=7.83.1 \
+    jq~=1.6
+
+# Create Non-root group and user to run service securely
+RUN addgroup -S practicalli && adduser -S practicalli -G practicalli
+
+# Create directory to contain service archive, owned by non-root user
+RUN mkdir -p /service && chown -R practicalli. /service
+
+# Tell docker that all future commands should run as the appuser user
+USER practicalli
+
+# Copy service archive file from Builder image
+WORKDIR /service
+COPY --from=builder /build/practicalli-service.jar /service/practicalli-service.jar
+
+# Add System Integration testing scripts
+RUN mkdir -p /service/test-scripts
+COPY --from=builder /build/test-scripts/curl--* /service/test-scripts/
+
+
+# ------------------------
+# Set Service Environment variables
+
+# optional over-rides for Integrant configuration
+# ENV HTTP_SERVER_PORT=
+# ENV MYSQL_DATABASE=
+ENV SERVICE_PROFILE=prod
+
+# Expose port of HTTP Server
+EXPOSE 8080
+
+# ------------------------
+# Run service
+
+# JDK_JAVA_OPTIONS environment variable for setting JVM options
+# Use JVM options that optomise running in a container
+# For very low latency, use the Z Garbage collector "-XX:+UseZGC"
+ENV JDK_JAVA_OPTIONS "-XshowSettings:system -XX:+UseContainerSupport -XX:MaxRAMPercentage=90"
+
+# Start service (override default `jshell` entrypoint command of image)
+CMD ["java", "-jar", "/service/practicalli-gameboard-service.jar"]
