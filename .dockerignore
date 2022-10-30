@@ -1,0 +1,48 @@
+# ------------------------
+# Docker Ignore file patterns
+# https://docs.docker.com/engine/reference/builder/#dockerignore-file
+#
+# Ignore local files that match any pattern when using the COPY command in Dockerfile
+# reducing the amount of time required to copy files
+# ------------------------
+
+
+# ------------------------
+# Clojure file patterns
+
+# .cpcache/ classpaths are relevant to use account and environment
+# so local .cpcache different to that for Docker
+.cpcache/
+
+.nrepl-port
+.clj-kondo/.cache/
+.cljstyle
+.lsp/
+.rebel_readline_history
+
+# ------------------------
+# Development Tool files
+.dir-locals.el
+.secretlintignore
+megalinter-reports/
+
+# ------------------------
+# Host files
+.java-version
+
+# ------------------------
+# version control
+.git/
+.github/
+
+# ------------------------
+# archived files
+*.tar
+*.tgz
+
+
+# ------------------------
+# SQL database dumps
+dump*
+*/dump*
+*/*/dump*
