@@ -44,10 +44,10 @@ COPY ./ /build
 
 # `dist` task packages Clojure service as an uberjar
 # creating: /build/practicalli-gameboard-api-service.jar
-# using the command `clojure -X:package/uberjar`
+# using the command `clojure -X:package/uberjar` in dist Makefile target
 
 # Run task from Makefile
-RUN make all
+RUN make dist
 
 # End of Docker builder image
 # ------------------------------------------
@@ -64,13 +64,14 @@ RUN make all
 FROM eclipse-temurin:17-alpine
 
 LABEL org.opencontainers.image.authors="nospam+dockerfile@practicall.li"
-LABEL io.github.practicalli.service="Gameboard API Service"
+LABEL io.github.practicalli.service="Clojure Service"
 LABEL io.github.practicalli.team="Practicalli Engineering Team"
 LABEL version="1.0"
-LABEL description="Gameboard API service"
+LABEL description="Clojure service"
 
 # Add Curl and jq binaries for manual running of system integration scripts
 RUN apk add --no-cache \
+    dumb-init~=1.2.5 \
     curl~=7.83.1 \
     jq~=1.6
 
@@ -111,5 +112,7 @@ EXPOSE 8080
 # For very low latency, use the Z Garbage collector "-XX:+UseZGC"
 ENV JDK_JAVA_OPTIONS "-XshowSettings:system -XX:+UseContainerSupport -XX:MaxRAMPercentage=90"
 
-# Start service (override default `jshell` entrypoint command of image)
-CMD ["java", "-jar", "/service/practicalli-gameboard-service.jar"]
+# Start service using dumb-init and java run-time
+# (overrides default `jshell` entrypoint command of image)
+ENTRYPOINT ["/usr/bin/dumb-init", "--"]
+CMD ["java", "-jar", "/service/practicalli-service.jar"]
