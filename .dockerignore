@@ -8,41 +8,14 @@
 
 
 # ------------------------
-# Clojure file patterns
-
-# .cpcache/ classpaths are relevant to use account and environment
-# so local .cpcache different to that for Docker
-.cpcache/
-
-.nrepl-port
-.clj-kondo/.cache/
-.cljstyle
-.lsp/
-.rebel_readline_history
+# Ignore all files
+*
 
 # ------------------------
-# Development Tool files
-.dir-locals.el
-.secretlintignore
-megalinter-reports/
-
-# ------------------------
-# Host files
-.java-version
-
-# ------------------------
-# version control
-.git/
-.github/
-
-# ------------------------
-# archived files
-*.tar
-*.tgz
-
-
-# ------------------------
-# SQL database dumps
-dump*
-*/dump*
-*/*/dump*
+# Include Clojure code and config
+!deps.edn
+!Makefile
+!src/
+!test/
+!test-data/
+!resources/

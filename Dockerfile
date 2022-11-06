@@ -33,6 +33,7 @@ COPY deps.edn Makefile /build/
 RUN make deps
 
 # Copy project to working directory
+# .dockerignore file excludes all but essential files
 COPY ./ /build
 
 
