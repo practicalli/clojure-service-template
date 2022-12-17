@@ -1,0 +1,5 @@
+{
+ ;; Add application configuration to resources/config.edn
+ ;; Accessible file in Uberjar
+ ;; Convention used by Integrant and similar compoment management libraries
+ }
