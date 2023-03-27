@@ -105,6 +105,25 @@ test-watch-all:  ## Run all tests when changes saved, regardless of failing test
 # ------------------------------------ #
 
 
+# -------- Build tasks --------------- #
+build-config: ## Pretty print build configuration
+	$(info --------- Watcher for unit tests ---------)
+	clojure -T:build config
+
+build-jar: ## Build a jar archive of Clojure project
+	$(info --------- Watcher for unit tests ---------)
+	clojure -T:build jar
+
+build-uberjar: ## Build a uberjar archive of Clojure project & Clojure runtime
+	$(info --------- Watcher for unit tests ---------)
+	clojure -T:build uberjar
+
+build-clean: ## Clean build assets or given directory
+	$(info --------- Watcher for unit tests ---------)
+	clojure -T:build clean
+
+# ------------------------------------ #
+
 # ------- Code Quality --------------- #
 
 pre-commit-check: format-check lint test  ## Run format, lint and test targets
