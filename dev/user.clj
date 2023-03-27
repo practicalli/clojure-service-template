@@ -20,23 +20,36 @@
    ;; [system] ; Component management
    ))
 
-(println "--------------------------------------")
+;; ---------------------------------------------------------
+;; Help
+
+(println "---------------------------------------------------------")
 (println "Loading custom user namespace tools...")
-(println "--------------------------------------")
-(println)
-(println "--------------------------------------")
-(println "Find Libraries:")
-(println "(find-lib/deps \"library-name)\"")
-(println)
-(println "Hotload libraries:")
-(println "(add-libs '{domain/library-name {:mvn/version \"v1.2.3\"}})")
-(println "- deps-* lsp snippets for adding library")
-(println)
-(println "Portal Inspector:")
-(println "- portal started by default, listening to all evaluations")
-(println "(inspect/clear)")
-(println "(remove-tap #'inspect/submit)")
-(println "(inspect/close)")
+(println "---------------------------------------------------------")
+
+(defn help
+  []
+  (println "---------------------------------------------------------")
+  (println "Find Libraries:")
+  (println "(find-lib/deps \"library-name)\"")
+  (println)
+  (println "Hotload libraries:")
+  (println "(add-libs '{domain/library-name {:mvn/version \"v1.2.3\"}})")
+  (println "- deps-* lsp snippets for adding library")
+  (println)
+  (println "Portal Inspector:")
+  (println "- portal started by default, listening to all evaluations")
+  (println "(inspect/clear)                ; clear all values in portal")
+  (println "(remove-tap #'inspect/submit)  ; stop sending to portal")
+  (println "(inspect/close)                ; close portal")
+  (println)
+  (println "(help)                         ; print help text")
+  (println "---------------------------------------------------------"))
+
+(help)
+
+;; End of Help
+;; ---------------------------------------------------------
 
 
 ;; ---------------------------------------------------------
