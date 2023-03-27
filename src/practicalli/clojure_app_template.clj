@@ -1,14 +1,17 @@
 (ns practicalli.clojure-app-template
-  (:gen-class))
+  (:gen-class)
+  (:require
+    [com.brunobonacci.mulog :as mulog]))
 
 (defn greet
   "Callable entry point to the application."
   [moniker]
-  (println (str "Welcome to Clojure " (or (:name moniker) "everyone"))))
+  (str "Welcome to Clojure " (or (:name moniker) "everyone")))
 
 (defn -main
   "Entry point into the application via clojure.main -M"
   [& args]
+  (mulog/log ::service-starup :user :practicalli)
   (greet {:name (first args)}))
 
 
