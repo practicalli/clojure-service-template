@@ -20,6 +20,24 @@
    ;; [system] ; Component management
    ))
 
+(println "--------------------------------------")
+(println "Loading custom user namespace tools...")
+(println "--------------------------------------")
+(println)
+(println "--------------------------------------")
+(println "Find Libraries:")
+(println "(find-lib/deps \"library-name)\"")
+(println)
+(println "Hotload libraries:")
+(println "(add-libs '{domain/library-name {:mvn/version \"v1.2.3\"}})")
+(println "- deps-* lsp snippets for adding library")
+(println)
+(println "Portal Inspector:")
+(println "- portal started by default, listening to all evaluations")
+(println "(inspect/clear)")
+(println "(remove-tap #'inspect/submit)")
+(println "(inspect/close)")
+
 
 ;; ---------------------------------------------------------
 ;; Start Portal and capture all evaluation results
