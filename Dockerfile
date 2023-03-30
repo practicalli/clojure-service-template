@@ -117,3 +117,11 @@ ENV JDK_JAVA_OPTIONS "-XshowSettings:system -XX:+UseContainerSupport -XX:MaxRAMP
 # (overrides `jshell` entrypoint - default in eclipse-temuring image)
 ENTRYPOINT ["/usr/bin/dumb-init", "--"]
 CMD ["java", "-jar", "/service/practicalli-service.jar"]
+
+
+# Docker Entrypoint documentation
+# https://docs.docker.com/engine/reference/builder/#entrypoint
+
+# $kill PID For Graceful Shutdown(SIGTERM) - can be caught for graceful shutdown
+# $kill -9 PID For Forceful Shutdown(SIGKILL) - process ends immeciately
+# SIGSTOP cannot be intercepted, process ends immediately
