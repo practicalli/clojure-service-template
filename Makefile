@@ -84,23 +84,30 @@ clean:  ## Clean build temporary files
 
 # ------- Testing -------------------- #
 
-# TODO: focus runner on `:unit` tests
+test-config:  ## Run unit tests - stoping on first error
+		$(info --------- Runner Configuration ---------)
+		clojure -M:test/env:test/run --print-config
+
+test-profile:  ## Profile unit test speed, showing 3 slowest tests
+		$(info --------- Runner Profile Tests ---------)
+		clojure -M:test/env:test/run --plugin  kaocha.plugin/profiling
+
 test:  ## Run unit tests - stoping on first error
-	$(info --------- Runner for unit tests ---------)
-	clojure -X:env/test:test/run
+		$(info --------- Runner for unit tests ---------)
+		clojure -X:test/env:test/run
 
 
 test-all:  ## Run all unit tests regardless of failing tests
-	$(info --------- Runner for all unit tests ---------)
-	clojure -X:env/test:test/run :fail-fast? false
+		$(info --------- Runner for all unit tests ---------)
+		clojure -X:test/env:test/run :fail-fast? false
 
 test-watch:  ## Run tests when changes saved, stopping test run on first error
-	$(info --------- Watcher for unit tests ---------)
-	clojure -X:env/test:test/run :watch? true
+		$(info --------- Watcher for unit tests ---------)
+		clojure -X:test/env:test/run :watch? true
 
 test-watch-all:  ## Run all tests when changes saved, regardless of failing tests
-	$(info --------- Watcher for unit tests ---------)
-	clojure -X:env/test:test/run :fail-fast? false :watch? true
+		$(info --------- Watcher for unit tests ---------)
+		clojure -X:test/env:test/run :fail-fast? false :watch? true
 
 # ------------------------------------ #
 
