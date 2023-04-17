@@ -17,8 +17,11 @@
 
    [com.brunobonacci.mulog :as mulog]
    [mulog-publisher] ; tap mulog events
-   ;; [system] ; Component management
-   ))
+
+   :; System component commands
+   [system
+    :refer
+    [config restart restart-all start stop system]]))
 
 ;; ---------------------------------------------------------
 ;; Help
