@@ -12,9 +12,9 @@
   "Tools for REPL Driven Development"
   (:require
    [clojure.tools.deps.alpha.repl :refer [add-libs]]
-   [find-deps.core :as find-lib]
    [portal.api :as inspect]
 
+   ;; Logging
    [com.brunobonacci.mulog :as mulog]
    [mulog-publisher] ; tap mulog events
 
@@ -33,9 +33,6 @@
 (defn help
   []
   (println "---------------------------------------------------------")
-  (println "Find Libraries:")
-  (println "(find-lib/deps \"library-name)\"")
-  (println)
   (println "Hotload libraries:")
   (println "(add-libs '{domain/library-name {:mvn/version \"v1.2.3\"}})")
   (println "- deps-* lsp snippets for adding library")
@@ -89,13 +86,6 @@
 
 ;; ---------------------------------------------------------
 
-
-;; ---------------------------------------------------------
-;; Find Libraries
-(comment
-  (find-lib/deps "library-name") ; fuzzy library search
-  (find-lib/print-deps "library-name")) ; show results as table
-;; ---------------------------------------------------------
 
 ;; ---------------------------------------------------------
 ;; Hotload libraries into running REPL
