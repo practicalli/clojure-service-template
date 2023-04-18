@@ -11,17 +11,14 @@
 (ns user
   "Tools for REPL Driven Development"
   (:require
-   [clojure.tools.deps.alpha.repl :refer [add-libs]]
    [portal.api :as inspect]
 
    ;; Logging
    [com.brunobonacci.mulog :as mulog]
    [mulog-publisher] ; tap mulog events
 
-   :; System component commands
-   [system
-    :refer
-    [config restart restart-all start stop system]]))
+   ;; System component commands
+   ))
 
 ;; ---------------------------------------------------------
 ;; Help
@@ -91,7 +88,15 @@
 ;; Hotload libraries into running REPL
 ;; `deps-*` LSP snippets to add dependency forms
 (comment
-  (add-libs '{domain/library-name {:mvn/version "1.0.0"}})
+  ;; Require needed for Clojure 1.11.x and earlier
+  ;; (require '[clojure.tools.deps.alpha.repl :refer [add-libs]])
+
+  ;; (add-libs '{domain/library-name {:mvn/version "1.0.0"}})
+
+  ;; Clojure 1.12.x onward
+  ;; (add-lib 'hiccup)   ; search for and load hiccup library
+  ;; (sync-deps)   ; load dependencies from top-level :deps list (if not already loaded)
+
   #_()) ; End of rich comment
 ;; ---------------------------------------------------------
 
