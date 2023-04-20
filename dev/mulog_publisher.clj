@@ -7,9 +7,7 @@
 
 (ns mulog-publisher
   (:require
-   ;; [com.brunobonacci.mulog :as mulog]
-   [com.brunobonacci.mulog.buffer :as mulog-buffer]
-   [portal.api :as p]))
+   [com.brunobonacci.mulog.buffer :as mulog-buffer]))
 
 (deftype TapPublisher [buffer transform]
   com.brunobonacci.mulog.publisher.PPublisher
