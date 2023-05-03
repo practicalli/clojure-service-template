@@ -32,12 +32,8 @@
 # Column the target description is printed from
 HELP-DESCRIPTION-SPACING := 24
 
-# Example variables (not currently used)
-SWAGGER-EDITOR-DOCKER-IMAGE := swaggerapi/swagger-editor
-GAMEBOARD-API-DOCKER-CONTAINER-NAME := gameboard-api-service
-
 # Makefile file and directory name wildcard
-EDN-FILES := $(wildcard *.edn)
+# EDN-FILES := $(wildcard *.edn)
 
 # ------------------------------------ #
 
@@ -58,7 +54,7 @@ help:  ## Describe available tasks in Makefile
 
 repl:  ## Run Clojure REPL with rich terminal UI (Rebel Readline)
 	$(info --------- Run Rebel REPL ---------)
-	clojure -M:env/dev:env/test:repl/rebel
+	clojure -M:test/env:repl/reloaded
 
 
 deps: deps.edn  ## Prepare dependencies for test and dist targets
@@ -84,7 +80,7 @@ clean:  ## Clean build temporary files
 
 # ------- Testing -------------------- #
 
-test-config:  ## Run unit tests - stoping on first error
+test-config:  ## Print Kaocha test runner configuration
 		$(info --------- Runner Configuration ---------)
 		clojure -M:test/env:test/run --print-config
 
@@ -114,7 +110,7 @@ test-watch-all:  ## Run all tests when changes saved, regardless of failing test
 
 # -------- Build tasks --------------- #
 build-config: ## Pretty print build configuration
-	$(info --------- Watcher for unit tests ---------)
+	$(info --------- View current build config ---------)
 	clojure -T:build config
 
 build-jar: ## Build a jar archive of Clojure project
@@ -126,7 +122,7 @@ build-uberjar: ## Build a uberjar archive of Clojure project & Clojure runtime
 	clojure -T:build uberjar
 
 build-clean: ## Clean build assets or given directory
-	$(info --------- Watcher for unit tests ---------)
+	$(info --------- Clean Build  ---------)
 	clojure -T:build clean
 
 # ------------------------------------ #
@@ -145,10 +141,9 @@ format-fix:  ## Run cljstyle and fix the formatting of Clojure code
 	$(info --------- cljstyle Runner ---------)
 	cljstyle fix
 
-
-lint:  ## Run MegaLinter with custom configuration
+lint:  ## Run MegaLinter with custom configuration (node.js required)
 	$(info --------- MegaLinter Runner ---------)
-	mega-linter-runner --flavor java --env 'MEGALINTER_CONFIG=.github/linters/mega-linter.yml'
+	npx mega-linter-runner --flavor java --env "'MEGALINTER_CONFIG=.github/config/megalinter.yaml'" --remove-container
 
 lint-clean:  ## Clean MegaLinter report information
 	$(info --------- MegaLinter Clean Reports ---------)
@@ -159,15 +154,15 @@ lint-clean:  ## Clean MegaLinter report information
 
 # ------- Docker Containers ---------- #
 
-docker-build:  ## Build Fraud API Service with docker compose
+docker-build:  ## Build Clojure Service with docker compose
 	$(info --------- Docker Compose Build ---------)
 	docker compose up --build
 
-docker-build-clean:  ## Build Fraud API Service with docker compose, removing orphans
+docker-build-clean:  ## Build Clojure Service with docker compose, removing orphans
 	$(info --------- Docker Compose Build - remove orphans ---------)
 	docker compose up --build --remove-orphans
 
-docker-down:  ## Shut down Fraud API service using docker compose
+docker-down:  ## Shut down Clojure service using docker compose
 	$(info --------- Docker Compose Down ---------)
 	docker-compose down
 
@@ -191,8 +186,8 @@ swagger-editor-down:  ## Stop Swagger Editor in Docker
 
 # TODO: focus runner on ^:integration` tests
 test-ci: deps  ## Test runner for integration tests
-	$(info --------- Runner for integration tests ---------)
-	clojure -P -X:env/test:test/run
+		$(info --------- Runner for integration tests ---------)
+		clojure -P -X:test/env:test/run
 
 
 # Run tests, build & package the Clojure code and clean up afterward
