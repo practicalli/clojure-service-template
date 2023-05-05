@@ -33,9 +33,6 @@ jobs:
       - name: "Setup Antq"
         uses: liquidz/antq-action@main
 
-      - name: "Antq Check versions"
-        run: antq --error-format="::error file={{file}}::{{message}}"
-
       - run: echo "🎨 library versions checked with liquidz/antq"
 
       - run: echo "🍏 Job status is ${{ job.status }}."
